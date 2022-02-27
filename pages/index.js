@@ -1,11 +1,15 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import PageHeaderSection from '../components/misc/PageHeaderSection'
 
 export default function Home() {
   return (
-    <div>
-      fun
-    </div>
+    <>
+      <Head>
+        <title>NFT Auth</title>
+        </Head>
+        
+        <PageHeaderSection title="NFT Auth" subtitle="A non-fungible token based authentication system" />
+
+    </>
   )
 }
