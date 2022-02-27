@@ -1,15 +1,29 @@
 import RegisterForm from "../components/misc/RegisterForm";
-import { ethers } from "hardhat";
+import BlocSocNFTAuth from '../artifacts/contracts/BlocSocNFTAuth.sol/BlocSocNFTAuth.json';
+import { ethers } from "ethers";
 
 function Form() {
     const registerUser = async event => {
         event.preventDefault();
 
+        const [accounts] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+    
+        const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+    
+        const contract = new ethers.Contract(
+            contractAddress, BlocSocNFTAuth.abi, signer);
+
+
+
         const body = JSON.stringify({
+            sheet1: {
             name: event.target.name.value,
             email: event.target.email.value,
             username: event.target.username.value,
-            wallet: ethers.provider.selectedAddress
+            wallet: accounts[0]
+            }
         })
 
         const res = await fetch(
@@ -23,15 +37,12 @@ function Form() {
             })
 
         const json = await res.json();
-
         console.log(json);
 
-        if (json.success) {
-            alert('User registered successfully');
-        } else {
-            alert('Error registering user');
-        }
+        const result = await contract.safeMint(event.target.name.value, event.target.email.value, event.target.username.value)
+        console.log(result);
 
+        alert('User registered successfully');
     }
 
     return (

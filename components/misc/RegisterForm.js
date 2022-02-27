@@ -1,4 +1,4 @@
-import { ethers } from "hardhat";
+import { ethers } from "ethers";
 
 const RegisterForm = ({
     handleSubmit
@@ -8,6 +8,9 @@ const RegisterForm = ({
     //connect wallet using ethersjs
     const [accounts] = await window.ethereum.request({ method: 'eth_requestAccounts' });
     const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const balance = await provider.getBalance(accounts[0]);
+    setWallet(accounts[0]);
+    setBalance(balance);
     };
     
     return (
@@ -32,11 +35,11 @@ const RegisterForm = ({
                         <input className="tb-form-control" type="text" name="username" required />
                         <small className="tb-form-text">This is the username that will be visible on the website.</small>
                     </div>                    
-            <div className="tb-btn tb-btn-dark-outline">
+            <div className="tb-btn tb-btn-light-outline">
                 <button onClick={() => connectWallet} data-hover="Connect Wallet">Connect Wallet</button>
             </div> 
 
-            <div className="tb-btn tb-btn-dark-outline">
+            <div className="tb-btn tb-btn-light-outline">
                 <button type="submit" data-hover="Submit">Submit</button>
             </div> 
         </form>
